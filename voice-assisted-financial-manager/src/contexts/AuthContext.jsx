@@ -56,10 +56,13 @@ export const AuthProvider = ({ children }) => {
 
   const signIn = async (email, password) => {
     setLoading(true);
+    console.log("AuthContext signIn called with:", email);
     try {
       const result = await authService.login(email, password);
+      console.log("AuthService login result:", result);
       return result;
     } catch (error) {
+      console.error("AuthContext signIn error:", error);
       throw error;
     } finally {
       setLoading(false);

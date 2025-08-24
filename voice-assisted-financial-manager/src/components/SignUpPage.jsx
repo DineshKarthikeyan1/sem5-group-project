@@ -45,6 +45,13 @@ const SignUpPage = ({ onSignUp, onBackToLogin }) => {
     e.preventDefault();
     setError("");
 
+    console.log("SignUpPage: Starting signup process with:", {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      passwordLength: formData.password.length,
+    });
+
     // Basic validation
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
@@ -57,17 +64,32 @@ const SignUpPage = ({ onSignUp, onBackToLogin }) => {
     }
 
     try {
+      console.log("SignUpPage: Calling signUp from context...");
       const result = await signUp(formData);
+      console.log("SignUpPage: SignUp result:", result);
 
       if (result.success) {
+        console.log(
+          "SignUpPage: Signup successful, checking verification need..."
+        );
         if (result.needsVerification) {
+          console.log(
+            "SignUpPage: Email verification required, moving to verify step"
+          );
           setStep("verify");
         } else {
+          console.log(
+            "SignUpPage: No verification needed, moving to success step"
+          );
           setStep("success");
         }
+      } else {
+        console.log("SignUpPage: Signup failed:", result);
+        setError(result.message || "Signup failed");
       }
     } catch (error) {
-      setError(error.message);
+      console.error("SignUpPage: Signup error:", error);
+      setError(error.message || "An unexpected error occurred");
     }
   };
 

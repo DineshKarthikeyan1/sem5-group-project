@@ -33,15 +33,20 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
     e.preventDefault();
     setError("");
 
+    console.log("Login attempt with:", formData.email);
+
     try {
       const result = await signIn(formData.email, formData.password);
+      console.log("Login result:", result);
 
       if (result.success) {
+        console.log("Login successful, calling onLogin");
         if (onLogin) {
           onLogin();
         }
       }
     } catch (error) {
+      console.error("Login error:", error);
       setError(error.message);
     }
   };
