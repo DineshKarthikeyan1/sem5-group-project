@@ -15,6 +15,7 @@ import {
 import { useAuth } from "../contexts/AuthContext";
 import SpeechToText from "./SpeechToText";
 import transactionParser from "../utils/transactionParser";
+import ThemeToggle from "./ThemeToggle";
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
@@ -128,19 +129,20 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
+      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-primary-600">
+              <h1 className="text-2xl font-bold text-primary-600 dark:text-primary-400 transition-colors duration-300">
                 VoiceFinance
               </h1>
             </div>
             <div className="flex items-center space-x-4">
+              <ThemeToggle size="sm" />
               {user && (
-                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300 transition-colors duration-300">
                   <User className="w-4 h-4" />
                   <span>
                     {user.user_metadata?.full_name ||
@@ -149,11 +151,11 @@ const Dashboard = () => {
                   </span>
                 </div>
               )}
-              <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+              <button className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                 <Settings className="w-5 h-5" />
               </button>
               <button
-                className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+                className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                 onClick={() => signOut()}
                 title="Sign Out"
               >
@@ -167,7 +169,7 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Voice Input Section */}
         <div className="mb-8">
-          <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl p-6 text-white">
+          <div className="bg-gradient-to-r from-primary-500 to-primary-600 dark:from-primary-600 dark:to-primary-700 rounded-2xl p-6 text-white transition-colors duration-300">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h2 className="text-xl font-semibold mb-2">
@@ -188,18 +190,18 @@ const Dashboard = () => {
             </div>
 
             {showVoiceInput && (
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+              <div className="bg-white/10 dark:bg-black/20 backdrop-blur-sm rounded-xl p-4 transition-colors duration-300">
                 <SpeechToText
                   onTranscription={handleVoiceTranscription}
                   placeholder="Say something like: 'I spent $15 on coffee at Starbucks' or 'I received $500 salary'"
-                  className="text-gray-900"
+                  className="text-gray-900 dark:text-white"
                   showFileUpload={true}
                   autoSubmit={false}
                 />
 
                 {voiceTranscription && (
-                  <div className="mt-4 p-3 bg-green-100 border border-green-200 rounded-lg">
-                    <p className="text-sm text-green-800">
+                  <div className="mt-4 p-3 bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg transition-colors duration-300">
+                    <p className="text-sm text-green-800 dark:text-green-300">
                       <strong>Processed:</strong> {voiceTranscription}
                     </p>
                   </div>
@@ -214,14 +216,14 @@ const Dashboard = () => {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl p-6 shadow-sm border border-gray-200"
+              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 transition-colors duration-300"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-300 transition-colors duration-300">
                     {stat.title}
                   </p>
-                  <p className="text-2xl font-bold text-gray-900 mt-1">
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1 transition-colors duration-300">
                     {stat.value}
                   </p>
                   <div className="flex items-center mt-2">

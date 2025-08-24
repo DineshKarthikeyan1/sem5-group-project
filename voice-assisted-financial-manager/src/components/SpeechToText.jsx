@@ -214,7 +214,7 @@ const SpeechToText = ({
           value={transcription}
           onChange={(e) => setTranscription(e.target.value)}
           placeholder={placeholder}
-          className="w-full min-h-[120px] p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none bg-gray-50"
+          className="w-full min-h-[120px] p-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-300"
           disabled={isRecording || isProcessing}
         />
 
@@ -222,7 +222,7 @@ const SpeechToText = ({
         {transcription && (
           <button
             onClick={clearTranscription}
-            className="absolute top-2 right-2 p-1 text-gray-400 hover:text-gray-600 rounded"
+            className="absolute top-2 right-2 p-1 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 rounded transition-colors duration-200"
           >
             <MicOff className="w-4 h-4" />
           </button>
@@ -231,17 +231,17 @@ const SpeechToText = ({
 
       {/* Error Display */}
       {error && (
-        <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-sm text-red-700">{error}</p>
+        <div className="mt-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg transition-colors duration-300">
+          <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
         </div>
       )}
 
       {/* Instructions */}
       {!transcription && !error && !isRecording && !isProcessing && (
-        <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+        <div className="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg transition-colors duration-300">
           <div className="flex items-start space-x-2">
-            <Volume2 className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-            <div className="text-sm text-blue-700">
+            <Volume2 className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+            <div className="text-sm text-blue-700 dark:text-blue-300">
               <p className="font-medium mb-1">Voice Input Tips:</p>
               <ul className="text-xs space-y-1">
                 <li>• Speak clearly and at normal pace</li>
@@ -256,8 +256,8 @@ const SpeechToText = ({
 
       {/* Success Message */}
       {transcription && !error && (
-        <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded-lg">
-          <p className="text-sm text-green-700">
+        <div className="mt-2 p-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg transition-colors duration-300">
+          <p className="text-sm text-green-700 dark:text-green-400">
             ✅ Transcription complete! You can edit the text above if needed.
           </p>
         </div>

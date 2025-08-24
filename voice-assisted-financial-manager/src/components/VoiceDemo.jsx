@@ -33,18 +33,18 @@ const VoiceDemo = () => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">
           🎤 Voice-to-Transaction Demo
         </h1>
-        <p className="text-lg text-gray-600">
+        <p className="text-lg text-gray-600 dark:text-gray-300 transition-colors duration-300">
           Experience AI-powered speech recognition with Groq Whisper
         </p>
       </div>
 
       {/* Speech Input Section */}
-      <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-        <h2 className="text-xl font-semibold mb-4 flex items-center">
-          <Volume2 className="w-5 h-5 mr-2 text-blue-600" />
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8 transition-colors duration-300">
+        <h2 className="text-xl font-semibold mb-4 flex items-center text-gray-900 dark:text-white transition-colors duration-300">
+          <Volume2 className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
           Try Voice Input
         </h2>
 
@@ -57,8 +57,8 @@ const VoiceDemo = () => {
       </div>
 
       {/* Example Phrases */}
-      <div className="bg-blue-50 rounded-xl p-6 mb-8">
-        <h3 className="text-lg font-semibold mb-4 flex items-center text-blue-900">
+      <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-6 mb-8 transition-colors duration-300">
+        <h3 className="text-lg font-semibold mb-4 flex items-center text-blue-900 dark:text-blue-300 transition-colors duration-300">
           <Lightbulb className="w-5 h-5 mr-2" />
           Try These Example Phrases
         </h3>
@@ -66,9 +66,10 @@ const VoiceDemo = () => {
           {examplePhrases.map((phrase, index) => (
             <div
               key={index}
-              className="bg-white p-3 rounded-lg border border-blue-200 text-sm"
+              className="bg-white dark:bg-gray-700 p-3 rounded-lg border border-blue-200 dark:border-blue-800 text-sm text-gray-900 dark:text-gray-100 transition-colors duration-300"
             >
-              <Play className="w-4 h-4 inline mr-2 text-blue-600" />"{phrase}"
+              <Play className="w-4 h-4 inline mr-2 text-blue-600 dark:text-blue-400" />
+              "{phrase}"
             </div>
           ))}
         </div>

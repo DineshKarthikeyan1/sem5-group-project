@@ -75,9 +75,9 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex transition-colors duration-300">
       {/* Left Panel - Features */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-600 to-primary-800 p-12 text-white relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-600 to-primary-800 dark:from-primary-700 dark:to-primary-900 p-12 text-white relative overflow-hidden transition-colors duration-300">
         <div className="absolute inset-0 bg-black opacity-10"></div>
         <div className="relative z-10 flex flex-col justify-center max-w-md mx-auto">
           <div className="mb-8">
@@ -129,12 +129,12 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
             <p className="text-gray-600">AI-powered financial management</p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-8 animate-slide-up">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 animate-slide-up transition-colors duration-300">
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
                 Welcome Back
               </h2>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">
                 Sign in to your account to continue
               </p>
             </div>
@@ -143,7 +143,7 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-300"
                 >
                   Email Address
                 </label>
@@ -153,7 +153,7 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200 bg-gray-50 focus:bg-white"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 text-gray-900 dark:text-white"
                   placeholder="Enter your email"
                   required
                 />
@@ -162,7 +162,7 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-300"
                 >
                   Password
                 </label>
@@ -173,14 +173,14 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200 bg-gray-50 focus:bg-white pr-12"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 text-gray-900 dark:text-white pr-12"
                     placeholder="Enter your password"
                     required
                   />
                   <button
                     type="button"
                     onClick={togglePasswordVisibility}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
                   >
                     {showPassword ? (
                       <EyeOff className="w-5 h-5" />
@@ -200,22 +200,24 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
                   />
                   <label
                     htmlFor="remember"
-                    className="ml-2 block text-sm text-gray-700"
+                    className="ml-2 block text-sm text-gray-700 dark:text-gray-300 transition-colors duration-300"
                   >
                     Remember me
                   </label>
                 </div>
                 <a
                   href="#"
-                  className="text-sm text-primary-600 hover:text-primary-500 transition-colors duration-200"
+                  className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300 transition-colors duration-200"
                 >
                   Forgot password?
                 </a>
               </div>
 
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                  <p className="text-sm text-red-700">{error}</p>
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 transition-colors duration-300">
+                  <p className="text-sm text-red-700 dark:text-red-400">
+                    {error}
+                  </p>
                 </div>
               )}
 
@@ -233,7 +235,9 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
                   <div className="w-full border-t border-gray-300"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">Or</span>
+                  <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 transition-colors duration-300">
+                    Or
+                  </span>
                 </div>
               </div>
 
@@ -258,11 +262,11 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
             </form>
 
             <div className="mt-8 text-center">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-300">
                 Don't have an account?{" "}
                 <button
                   onClick={onGoToSignUp}
-                  className="text-primary-600 hover:text-primary-500 font-medium transition-colors duration-200"
+                  className="text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300 font-medium transition-colors duration-200"
                 >
                   Sign up
                 </button>
@@ -271,14 +275,14 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
           </div>
 
           {/* Security Notice */}
-          <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="mt-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 transition-colors duration-300">
             <div className="flex items-start space-x-3">
-              <Shield className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+              <Shield className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
               <div>
-                <h4 className="text-sm font-medium text-blue-900">
+                <h4 className="text-sm font-medium text-blue-900 dark:text-blue-300">
                   Privacy & Security
                 </h4>
-                <p className="text-xs text-blue-700 mt-1">
+                <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">
                   Your financial data is processed locally and never shared with
                   third parties.
                 </p>
