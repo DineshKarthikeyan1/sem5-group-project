@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import {
-  Mic,
-  MicOff,
   Plus,
   TrendingUp,
   TrendingDown,
@@ -12,13 +10,17 @@ import {
   Settings,
   User,
   LogOut,
+  MessageSquare,
 } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
+import SpeechToText from "./SpeechToText";
+import transactionParser from "../utils/transactionParser";
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
-  const [isRecording, setIsRecording] = useState(false);
-  const [recentTransactions] = useState([
+  const [showVoiceInput, setShowVoiceInput] = useState(false);
+  const [voiceTranscription, setVoiceTranscription] = useState("");
+  const [recentTransactions, setRecentTransactions] = useState([
     {
       id: 1,
       description: "Coffee at Starbucks",
@@ -53,14 +55,45 @@ const Dashboard = () => {
     },
   ]);
 
-  const handleVoiceToggle = () => {
-    setIsRecording(!isRecording);
-    if (!isRecording) {
-      // This will be connected to Whisper later
-      console.log("Starting voice recording...");
-    } else {
-      console.log("Stopping voice recording...");
+  // Handle voice transcription
+  const handleVoiceTranscription = (text) => {
+    console.log("Voice transcription received:", text);
+    setVoiceTranscription(text);
+
+    // Process the transcription to extract transaction details
+    processVoiceTransaction(text);
+  };
+
+  // Process voice input to create transaction
+  const processVoiceTransaction = (text) => {
+    console.log("Processing voice transaction:", text);
+
+    try {
+      // Use the advanced transaction parser
+      const transaction = transactionParser.parseTransaction(text);
+
+      // Validate the transaction
+      const validation = transactionParser.validateTransaction(transaction);
+
+      if (validation.isValid) {
+        // Add to transactions
+        setRecentTransactions((prev) => [transaction, ...prev.slice(0, 9)]);
+        console.log("Created transaction:", transaction);
+
+        // Show success message (you can add a toast notification here)
+        console.log("✅ Transaction added successfully!");
+      } else {
+        // Show validation errors
+        console.error("Transaction validation failed:", validation.errors);
+        // You can show these errors to the user
+      }
+    } catch (error) {
+      console.error("Error processing voice transaction:", error);
     }
+  };
+
+  const toggleVoiceInput = () => {
+    setShowVoiceInput(!showVoiceInput);
   };
 
   const stats = [
@@ -135,32 +168,44 @@ const Dashboard = () => {
         {/* Voice Input Section */}
         <div className="mb-8">
           <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl p-6 text-white">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-4">
               <div>
                 <h2 className="text-xl font-semibold mb-2">
                   Voice Transaction Input
                 </h2>
                 <p className="text-primary-100">
-                  {isRecording
-                    ? "Listening... Speak your transaction details"
-                    : "Click to start recording your transaction"}
+                  Use AI-powered speech recognition to add transactions
+                  naturally
                 </p>
               </div>
               <button
-                onClick={handleVoiceToggle}
-                className={`p-4 rounded-full transition-all duration-200 transform hover:scale-105 ${
-                  isRecording
-                    ? "bg-red-500 hover:bg-red-600 animate-pulse"
-                    : "bg-white/20 hover:bg-white/30"
-                }`}
+                onClick={toggleVoiceInput}
+                className="flex items-center space-x-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all duration-200"
               >
-                {isRecording ? (
-                  <MicOff className="w-8 h-8" />
-                ) : (
-                  <Mic className="w-8 h-8" />
-                )}
+                <MessageSquare className="w-5 h-5" />
+                <span>{showVoiceInput ? "Hide" : "Show"} Voice Input</span>
               </button>
             </div>
+
+            {showVoiceInput && (
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <SpeechToText
+                  onTranscription={handleVoiceTranscription}
+                  placeholder="Say something like: 'I spent $15 on coffee at Starbucks' or 'I received $500 salary'"
+                  className="text-gray-900"
+                  showFileUpload={true}
+                  autoSubmit={false}
+                />
+
+                {voiceTranscription && (
+                  <div className="mt-4 p-3 bg-green-100 border border-green-200 rounded-lg">
+                    <p className="text-sm text-green-800">
+                      <strong>Processed:</strong> {voiceTranscription}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
