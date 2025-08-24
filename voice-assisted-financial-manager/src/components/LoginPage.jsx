@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { Eye, EyeOff, Mic, Shield, CreditCard, TrendingUp } from 'lucide-react';
-import authService from '../services/authService';
+import React, { useState } from "react";
+import { Eye, EyeOff, Mic, Shield, CreditCard, TrendingUp } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 
 const LoginPage = ({ onLogin, onGoToSignUp }) => {
+  const { signIn, loading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isVoiceMode, setIsVoiceMode] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -26,17 +26,16 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
   const handleVoiceToggle = () => {
     setIsVoiceMode(!isVoiceMode);
     // This will be connected to Whisper later
-    console.log('Voice mode toggled:', !isVoiceMode);
+    console.log("Voice mode toggled:", !isVoiceMode);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setIsLoading(true);
-    
+    setError("");
+
     try {
-      const result = await authService.login(formData.email, formData.password);
-      
+      const result = await signIn(formData.email, formData.password);
+
       if (result.success) {
         if (onLogin) {
           onLogin();
@@ -44,32 +43,30 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
       }
     } catch (error) {
       setError(error.message);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const features = [
     {
       icon: <Mic className="w-6 h-6" />,
-      title: 'Voice Commands',
-      description: 'Record transactions using natural speech'
+      title: "Voice Commands",
+      description: "Record transactions using natural speech",
     },
     {
       icon: <Shield className="w-6 h-6" />,
-      title: 'Privacy First',
-      description: 'All data processed locally on your device'
+      title: "Privacy First",
+      description: "All data processed locally on your device",
     },
     {
       icon: <CreditCard className="w-6 h-6" />,
-      title: 'Smart Categorization',
-      description: 'AI-powered expense categorization'
+      title: "Smart Categorization",
+      description: "AI-powered expense categorization",
     },
     {
       icon: <TrendingUp className="w-6 h-6" />,
-      title: 'Financial Insights',
-      description: 'Comprehensive spending analytics'
-    }
+      title: "Financial Insights",
+      description: "Comprehensive spending analytics",
+    },
   ];
 
   return (
@@ -84,24 +81,33 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
               Your AI-powered voice-assisted financial manager
             </p>
           </div>
-          
+
           <div className="space-y-6">
             {features.map((feature, index) => (
-              <div key={index} className="flex items-start space-x-4 animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
+              <div
+                key={index}
+                className="flex items-start space-x-4 animate-fade-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
                 <div className="bg-primary-500 p-3 rounded-lg flex-shrink-0">
                   {feature.icon}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-lg mb-1">{feature.title}</h3>
-                  <p className="text-primary-100 text-sm">{feature.description}</p>
+                  <h3 className="font-semibold text-lg mb-1">
+                    {feature.title}
+                  </h3>
+                  <p className="text-primary-100 text-sm">
+                    {feature.description}
+                  </p>
                 </div>
               </div>
             ))}
           </div>
-          
+
           <div className="mt-12 p-6 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
             <p className="text-sm text-primary-100 italic">
-              "Transform the way you manage finances with the power of voice and AI"
+              "Transform the way you manage finances with the power of voice and
+              AI"
             </p>
           </div>
         </div>
@@ -112,19 +118,28 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
         <div className="w-full max-w-md">
           {/* Logo for mobile */}
           <div className="lg:hidden text-center mb-8">
-            <h1 className="text-3xl font-bold text-primary-600 mb-2">VoiceFinance</h1>
+            <h1 className="text-3xl font-bold text-primary-600 mb-2">
+              VoiceFinance
+            </h1>
             <p className="text-gray-600">AI-powered financial management</p>
           </div>
 
           <div className="bg-white rounded-2xl shadow-xl p-8 animate-slide-up">
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-              <p className="text-gray-600">Sign in to your account to continue</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Welcome Back
+              </h2>
+              <p className="text-gray-600">
+                Sign in to your account to continue
+              </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Email Address
                 </label>
                 <input
@@ -140,12 +155,15 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Password
                 </label>
                 <div className="relative">
                   <input
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     id="password"
                     name="password"
                     value={formData.password}
@@ -159,7 +177,11 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
                     onClick={togglePasswordVisibility}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -171,11 +193,17 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
                     id="remember"
                     className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                   />
-                  <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
+                  <label
+                    htmlFor="remember"
+                    className="ml-2 block text-sm text-gray-700"
+                  >
                     Remember me
                   </label>
                 </div>
-                <a href="#" className="text-sm text-primary-600 hover:text-primary-500 transition-colors duration-200">
+                <a
+                  href="#"
+                  className="text-sm text-primary-600 hover:text-primary-500 transition-colors duration-200"
+                >
                   Forgot password?
                 </a>
               </div>
@@ -188,10 +216,10 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
 
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={loading}
                 className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-4 rounded-lg font-medium hover:from-primary-700 hover:to-primary-800 transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading ? 'Signing In...' : 'Sign In'}
+                {loading ? "Signing In..." : "Sign In"}
               </button>
 
               {/* Voice Mode Toggle */}
@@ -209,20 +237,24 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
                 onClick={handleVoiceToggle}
                 className={`w-full py-3 px-4 rounded-lg font-medium transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 ${
                   isVoiceMode
-                    ? 'bg-gradient-to-r from-red-500 to-red-600 text-white focus:ring-red-500'
-                    : 'bg-gradient-to-r from-green-500 to-green-600 text-white focus:ring-green-500'
+                    ? "bg-gradient-to-r from-red-500 to-red-600 text-white focus:ring-red-500"
+                    : "bg-gradient-to-r from-green-500 to-green-600 text-white focus:ring-green-500"
                 }`}
               >
                 <div className="flex items-center justify-center space-x-2">
-                  <Mic className={`w-5 h-5 ${isVoiceMode ? 'animate-pulse' : ''}`} />
-                  <span>{isVoiceMode ? 'Voice Mode Active' : 'Enable Voice Login'}</span>
+                  <Mic
+                    className={`w-5 h-5 ${isVoiceMode ? "animate-pulse" : ""}`}
+                  />
+                  <span>
+                    {isVoiceMode ? "Voice Mode Active" : "Enable Voice Login"}
+                  </span>
                 </div>
               </button>
             </form>
 
             <div className="mt-8 text-center">
               <p className="text-sm text-gray-600">
-                Don't have an account?{' '}
+                Don't have an account?{" "}
                 <button
                   onClick={onGoToSignUp}
                   className="text-primary-600 hover:text-primary-500 font-medium transition-colors duration-200"
@@ -238,9 +270,12 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
             <div className="flex items-start space-x-3">
               <Shield className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
               <div>
-                <h4 className="text-sm font-medium text-blue-900">Privacy & Security</h4>
+                <h4 className="text-sm font-medium text-blue-900">
+                  Privacy & Security
+                </h4>
                 <p className="text-xs text-blue-700 mt-1">
-                  Your financial data is processed locally and never shared with third parties.
+                  Your financial data is processed locally and never shared with
+                  third parties.
                 </p>
               </div>
             </div>
