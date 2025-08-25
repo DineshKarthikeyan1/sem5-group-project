@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# VoiceFinance Vercel Deployment Script
-echo "🚀 Deploying VoiceFinance to Vercel..."
+# FinSay Vercel Deployment Script
+echo "🚀 Deploying FinSay to Vercel..."
 
 # Check if vercel CLI is installed
 if ! command -v vercel &> /dev/null; then

@@ -1,12 +1,12 @@
-# VoiceFinance - Voice-Assisted Financial Manager
+# FinSay - Voice-Assisted Financial Manager
 
 A modern, AI-powered financial management application that allows users to track transactions and manage finances using voice commands.
 
-![VoiceFinance Login](./docs/login-preview.png)
+![FinSay Login](./docs/login-preview.png)
 
 ## 🎯 Overview
 
-VoiceFinance is a cross-platform application designed to revolutionize personal finance management through voice interactions. Built with privacy-first principles, all processing happens locally using open-source technologies.
+FinSay is a cross-platform application designed to revolutionize personal finance management through voice interactions. Built with privacy-first principles, all processing happens locally using open-source technologies.
 
 ## ✨ Features
 
@@ -142,7 +142,7 @@ VoiceFinance is a cross-platform application designed to revolutionize personal 
 
 ### Demo Credentials
 
-- **Email**: `demo@voicefinance.com`
+- **Email**: `demo@finsay.com`
 - **Password**: `demo123`
 
 ## 🎨 UI Components
@@ -294,7 +294,7 @@ This project is optimized for Vercel deployment with automatic builds and enviro
 
 #### Quick Deploy
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/voice-assisted-financial-manager&project-name=voicefinance&repository-name=voicefinance)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/voice-assisted-financial-manager&project-name=finsay&repository-name=finsay)
 
 #### Manual Deployment
 

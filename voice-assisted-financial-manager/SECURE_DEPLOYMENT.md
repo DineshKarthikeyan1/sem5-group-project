@@ -42,7 +42,7 @@ With the environment variables properly configured in Vercel dashboard, your app
 
 ## 🎯 Quick Deploy Button
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/DineshKarthikeyan1/sem5-group-project&project-name=voicefinance&repository-name=voicefinance&root-directory=voice-assisted-financial-manager)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/DineshKarthikeyan1/sem5-group-project&project-name=finsay&repository-name=finsay&root-directory=voice-assisted-financial-manager)
 
 ## ✅ Security Best Practices Applied
 
@@ -51,4 +51,4 @@ With the environment variables properly configured in Vercel dashboard, your app
 - ✅ GitHub push protection respected
 - ✅ Clean commit history maintained
 
-Your VoiceFinance app is now ready for secure deployment! 🚀
+Your FinSay app is now ready for secure deployment! 🚀

@@ -2,7 +2,7 @@
 
 ## ✅ Completed Implementation
 
-Your VoiceFinance app now has fully functional Supabase authentication! Here's what has been implemented:
+Your FinSay app now has fully functional Supabase authentication! Here's what has been implemented:
 
 ### 🔧 Core Components
 
@@ -94,4 +94,4 @@ If you encounter issues:
 3. Check browser console for detailed error messages
 4. Ensure email verification is working (check spam folder)
 
-Your VoiceFinance app now has enterprise-grade authentication powered by Supabase! 🎉
+Your FinSay app now has enterprise-grade authentication powered by Supabase! 🎉

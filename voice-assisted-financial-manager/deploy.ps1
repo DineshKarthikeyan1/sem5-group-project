@@ -1,5 +1,5 @@
-# VoiceFinance Vercel Deployment Script
-Write-Host "🚀 Deploying VoiceFinance to Vercel..." -ForegroundColor Green
+# FinSay Vercel Deployment Script
+Write-Host "🚀 Deploying FinSay to Vercel..." -ForegroundColor Green
 
 # Check if vercel CLI is installed
 $vercelInstalled = Get-Command vercel -ErrorAction SilentlyContinue

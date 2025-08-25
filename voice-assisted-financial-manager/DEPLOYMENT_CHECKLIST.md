@@ -212,4 +212,4 @@ vercel logs
 
 ---
 
-**🎉 Once all items are checked, your VoiceFinance app is ready for production!**
+**🎉 Once all items are checked, your FinSay app is ready for production!**

@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI(
-    title="VoiceFinance API",
+    title="FinSay API",
     description="Voice-Assisted Financial Manager Backend API",
     version="1.0.0"
 )
@@ -107,12 +107,12 @@ def send_verification_email(email: str, code: str):
         msg = MIMEMultipart()
         msg['From'] = SMTP_USERNAME
         msg['To'] = email
-        msg['Subject'] = "VoiceFinance - Email Verification"
+        msg['Subject'] = "FinSay - Email Verification"
         
         body = f"""
         <html>
             <body>
-                <h2>Welcome to VoiceFinance!</h2>
+                <h2>Welcome to FinSay!</h2>
                 <p>Your verification code is: <strong>{code}</strong></p>
                 <p>This code will expire in 10 minutes.</p>
                 <p>If you didn't request this code, please ignore this email.</p>
@@ -164,7 +164,7 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
 # API endpoints
 @app.get("/")
 async def root():
-    return {"message": "VoiceFinance API is running"}
+    return {"message": "FinSay API is running"}
 
 @app.post("/auth/register", response_model=dict)
 async def register(user: UserCreate):

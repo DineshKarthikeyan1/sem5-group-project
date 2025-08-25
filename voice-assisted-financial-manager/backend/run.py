@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-VoiceFinance Backend Server Runner
+FinSay Backend Server Runner
 """
 
 import uvicorn
@@ -16,7 +16,7 @@ if __name__ == "__main__":
     port = int(os.getenv("PORT", "8000"))
     reload = os.getenv("RELOAD", "true").lower() == "true"
     
-    print(f"🚀 Starting VoiceFinance Backend Server...")
+    print(f"🚀 Starting FinSay Backend Server...")
     print(f"📍 Host: {host}")
     print(f"🔌 Port: {port}")
     print(f"🔄 Reload: {reload}")

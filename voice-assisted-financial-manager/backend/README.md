@@ -1,6 +1,6 @@
-# VoiceFinance Backend API
+# FinSay Backend API
 
-A FastAPI-based backend service for the VoiceFinance application, providing secure email authentication and user management.
+A FastAPI-based backend service for the FinSay application, providing secure email authentication and user management.
 
 ## 🚀 Features
 
@@ -29,22 +29,25 @@ A FastAPI-based backend service for the VoiceFinance application, providing secu
 ## 🔧 Installation
 
 1. **Clone the repository and navigate to backend**
+
    ```bash
    cd backend
    ```
 
 2. **Create a virtual environment**
+
    ```bash
    python -m venv venv
-   
+
    # On Windows
    venv\Scripts\activate
-   
+
    # On macOS/Linux
    source venv/bin/activate
    ```
 
 3. **Install dependencies**
+
    ```bash
    pip install -r requirements.txt
    ```
@@ -62,11 +65,13 @@ A FastAPI-based backend service for the VoiceFinance application, providing secu
 ## 🚀 Running the Server
 
 ### Development Mode
+
 ```bash
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 ### Production Mode
+
 ```bash
 uvicorn main:app --host 0.0.0.0 --port 8000
 ```
@@ -76,6 +81,7 @@ The API will be available at `http://localhost:8000`
 ## 📚 API Documentation
 
 Once the server is running, you can access:
+
 - **Interactive API Docs**: http://localhost:8000/docs
 - **ReDoc Documentation**: http://localhost:8000/redoc
 
@@ -84,9 +90,11 @@ Once the server is running, you can access:
 ### Authentication Endpoints
 
 #### POST `/auth/register`
+
 Register a new user and send verification email.
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -97,6 +105,7 @@ Register a new user and send verification email.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -106,9 +115,11 @@ Register a new user and send verification email.
 ```
 
 #### POST `/auth/verify-email`
+
 Verify email with 6-digit code.
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -117,6 +128,7 @@ Verify email with 6-digit code.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -131,9 +143,11 @@ Verify email with 6-digit code.
 ```
 
 #### POST `/auth/resend-verification`
+
 Resend verification code to email.
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com"
@@ -141,6 +155,7 @@ Resend verification code to email.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -149,9 +164,11 @@ Resend verification code to email.
 ```
 
 #### POST `/auth/login`
+
 Login with email and password.
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -160,6 +177,7 @@ Login with email and password.
 ```
 
 **Response:**
+
 ```json
 {
   "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
@@ -168,14 +186,17 @@ Login with email and password.
 ```
 
 #### GET `/auth/me`
+
 Get current user information (requires authentication).
 
 **Headers:**
+
 ```
 Authorization: Bearer <access_token>
 ```
 
 **Response:**
+
 ```json
 {
   "email": "user@example.com",
@@ -186,9 +207,11 @@ Authorization: Bearer <access_token>
 ```
 
 #### POST `/auth/logout`
+
 Logout user (client-side token removal).
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -199,19 +222,23 @@ Logout user (client-side token removal).
 ### Utility Endpoints
 
 #### GET `/`
+
 Root endpoint - API status.
 
 **Response:**
+
 ```json
 {
-  "message": "VoiceFinance API is running"
+  "message": "FinSay API is running"
 }
 ```
 
 #### GET `/health`
+
 Health check endpoint.
 
 **Response:**
+
 ```json
 {
   "status": "healthy",
@@ -222,21 +249,25 @@ Health check endpoint.
 ## 🔒 Security Features
 
 ### Password Security
+
 - **Bcrypt Hashing**: Passwords are hashed using bcrypt with salt
 - **Minimum Length**: 8 characters required
 - **Secure Storage**: Hashed passwords only stored
 
 ### JWT Authentication
+
 - **Token Expiration**: 30-minute access token lifetime
 - **Secure Algorithm**: HS256 signing algorithm
 - **Bearer Token**: Authorization header required
 
 ### Email Verification
+
 - **6-Digit Codes**: Secure random verification codes
 - **10-Minute Expiry**: Codes expire after 10 minutes
 - **One-Time Use**: Codes are invalidated after use
 
 ### CORS Protection
+
 - **Origin Restriction**: Only allows specified origins
 - **Credential Support**: Supports authenticated requests
 - **Method Control**: Restricted HTTP methods
@@ -244,6 +275,7 @@ Health check endpoint.
 ## 📧 Email Configuration
 
 ### Gmail Setup
+
 1. Enable 2-Factor Authentication on your Gmail account
 2. Generate an App Password:
    - Go to Google Account settings
@@ -252,6 +284,7 @@ Health check endpoint.
 3. Use the generated password in your `.env` file
 
 ### Environment Variables
+
 ```env
 SMTP_SERVER=smtp.gmail.com
 SMTP_PORT=587
@@ -262,11 +295,13 @@ SMTP_PASSWORD=your-app-password
 ## 🧪 Testing
 
 ### Manual Testing
+
 You can test the API using the interactive documentation at `http://localhost:8000/docs`
 
 ### Example cURL Commands
 
 **Register a new user:**
+
 ```bash
 curl -X POST "http://localhost:8000/auth/register" \
   -H "Content-Type: application/json" \
@@ -279,6 +314,7 @@ curl -X POST "http://localhost:8000/auth/register" \
 ```
 
 **Verify email:**
+
 ```bash
 curl -X POST "http://localhost:8000/auth/verify-email" \
   -H "Content-Type: application/json" \
@@ -289,6 +325,7 @@ curl -X POST "http://localhost:8000/auth/verify-email" \
 ```
 
 **Login:**
+
 ```bash
 curl -X POST "http://localhost:8000/auth/login" \
   -H "Content-Type: application/json" \
@@ -308,6 +345,7 @@ The API returns appropriate HTTP status codes and error messages:
 - **500 Internal Server Error**: Server-side errors
 
 ### Error Response Format
+
 ```json
 {
   "detail": "Error message description"
@@ -317,6 +355,7 @@ The API returns appropriate HTTP status codes and error messages:
 ## 🔧 Development
 
 ### Project Structure
+
 ```
 backend/
 ├── main.py              # FastAPI application
@@ -326,15 +365,18 @@ backend/
 ```
 
 ### Adding New Endpoints
+
 1. Define Pydantic models for request/response
 2. Create endpoint function with appropriate decorators
 3. Add error handling and validation
 4. Update this README with endpoint documentation
 
 ### Database Integration
+
 Currently using in-memory storage for demo purposes. For production:
 
 1. Install database dependencies:
+
    ```bash
    pip install sqlalchemy psycopg2-binary alembic
    ```
@@ -346,6 +388,7 @@ Currently using in-memory storage for demo purposes. For production:
 ## 🚀 Deployment
 
 ### Docker Deployment
+
 ```dockerfile
 FROM python:3.9-slim
 
@@ -360,13 +403,14 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
 ### Environment Variables for Production
+
 ```env
 SECRET_KEY=your-production-secret-key
 SMTP_SERVER=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USERNAME=your-production-email@gmail.com
 SMTP_PASSWORD=your-production-app-password
-DATABASE_URL=postgresql://user:password@localhost/voicefinance
+DATABASE_URL=postgresql://user:password@localhost/finsay
 ```
 
 ## 🤝 Contributing
@@ -379,11 +423,12 @@ DATABASE_URL=postgresql://user:password@localhost/voicefinance
 
 ## 📄 License
 
-This project is part of the VoiceFinance application and follows the same license terms.
+This project is part of the FinSay application and follows the same license terms.
 
 ## 🆘 Support
 
 For issues and questions:
+
 1. Check the API documentation at `/docs`
 2. Review error messages in the console
 3. Check environment variable configuration

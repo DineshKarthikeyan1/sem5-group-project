@@ -2,7 +2,7 @@
 
 ## ✅ Complete Dark Mode System
 
-Your VoiceFinance app now has a beautiful, animated dark mode system with smooth transitions throughout the entire application!
+Your FinSay app now has a beautiful, animated dark mode system with smooth transitions throughout the entire application!
 
 ### 🚀 Features Implemented
 
@@ -201,7 +201,7 @@ const MyComponent = () => {
 
 ### 🎉 Result
 
-Your VoiceFinance app now features:
+Your FinSay app now features:
 
 - **🌙 Beautiful Dark Mode** - Elegant dark theme throughout
 - **🎨 Smooth Animations** - Buttery smooth theme transitions

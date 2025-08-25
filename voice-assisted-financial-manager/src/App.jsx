@@ -34,7 +34,7 @@ function AppContent() {
   };
 
   if (loading) {
-    return <LoadingSpinner message="Loading VoiceFinance..." />;
+    return <LoadingSpinner message="Loading FinSay..." />;
   }
 
   // Show test component if requested

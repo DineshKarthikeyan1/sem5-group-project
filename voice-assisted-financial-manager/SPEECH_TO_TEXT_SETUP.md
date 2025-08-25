@@ -2,7 +2,7 @@
 
 ## ✅ Complete Implementation
 
-Your VoiceFinance app now has fully functional speech-to-text capabilities powered by Groq's Whisper API!
+Your FinSay app now has fully functional speech-to-text capabilities powered by Groq's Whisper API!
 
 ### 🚀 Features Implemented
 
@@ -194,7 +194,7 @@ VITE_GROQ_API_KEY=your_groq_api_key_here
 
 ### 🎉 Success!
 
-Your VoiceFinance app now has enterprise-grade speech-to-text capabilities! Users can:
+Your FinSay app now has enterprise-grade speech-to-text capabilities! Users can:
 
 - **Record transactions naturally** using voice
 - **Upload audio files** for transcription

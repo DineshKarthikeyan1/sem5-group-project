@@ -227,7 +227,7 @@ const Dashboard = () => {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <h1 className="text-2xl font-bold text-primary-600 dark:text-primary-400 transition-colors duration-300">
-                VoiceFinance
+                FinSay
               </h1>
             </div>
             <div className="flex items-center space-x-4">

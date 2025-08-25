@@ -448,7 +448,7 @@ const SignUpPage = ({ onSignUp, onBackToLogin }) => {
               </h2>
               <p className="text-gray-600">
                 {step === "signup" &&
-                  "Join VoiceFinance to start managing your finances with voice"}
+                  "Join FinSay to start managing your finances with voice"}
                 {step === "verify" && "Enter the code sent to your email"}
                 {step === "success" && "Your account is ready to use"}
               </p>

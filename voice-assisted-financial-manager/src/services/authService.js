@@ -1,6 +1,6 @@
 import { supabase } from "../lib/supabase";
 
-// Authentication Service for VoiceFinance using Supabase
+// Authentication Service for FinSay using Supabase
 class AuthService {
   constructor() {
     this.currentUser = null;
