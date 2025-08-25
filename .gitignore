@@ -48,3 +48,7 @@ venv.bak/
 *.db
 *.sqlite
 *.sqlite3
+
+# Vercel
+.vercel
+*.vercel.json.bak

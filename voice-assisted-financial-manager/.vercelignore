@@ -1,0 +1,16 @@
+node_modules
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+backend/
+*.log
+.DS_Store
+.vscode/
+.git/
+README.md
+DARK_MODE_IMPLEMENTATION.md
+SPEECH_TO_TEXT_SETUP.md
+SUPABASE_AUTH_SETUP.md
+TROUBLESHOOTING_SIGNUP.md
