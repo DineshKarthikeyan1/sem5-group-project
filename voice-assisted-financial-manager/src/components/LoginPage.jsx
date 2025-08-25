@@ -81,7 +81,7 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
         <div className="absolute inset-0 bg-black opacity-10"></div>
         <div className="relative z-10 flex flex-col justify-center max-w-md mx-auto">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-4">VoiceFinance</h1>
+            <h1 className="text-4xl font-bold mb-4">FinSay</h1>
             <p className="text-xl text-primary-100">
               Your AI-powered voice-assisted financial manager
             </p>
@@ -123,9 +123,7 @@ const LoginPage = ({ onLogin, onGoToSignUp }) => {
         <div className="w-full max-w-md">
           {/* Logo for mobile */}
           <div className="lg:hidden text-center mb-8">
-            <h1 className="text-3xl font-bold text-primary-600 mb-2">
-              VoiceFinance
-            </h1>
+            <h1 className="text-3xl font-bold text-primary-600 mb-2">FinSay</h1>
             <p className="text-gray-600">AI-powered financial management</p>
           </div>
 
