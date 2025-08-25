@@ -20,11 +20,5 @@
         }
       ]
     }
-  ],
-  "env": {
-    "VITE_GROQ_API_KEY": "@vite_groq_api_key",
-    "VITE_SUPABASE_URL": "@vite_supabase_url",
-    "VITE_SUPABASE_ANON_KEY": "@vite_supabase_anon_key",
-    "VITE_SUPABASE_DB_PASSWORD": "@vite_supabase_db_password"
-  }
+  ]
 }
