@@ -582,10 +582,10 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Recent Transactions */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-              <div className="p-6 border-b border-gray-200">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+              <div className="p-6 border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white transition-colors duration-300">
                     Recent Transactions
                   </h3>
                   <button className="flex items-center space-x-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
@@ -598,14 +598,16 @@ const Dashboard = () => {
                 {loading ? (
                   <div className="flex items-center justify-center py-8">
                     <div className="w-6 h-6 border-2 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
-                    <span className="ml-2 text-gray-600">
+                    <span className="ml-2 text-gray-600 dark:text-gray-300 transition-colors duration-300">
                       Loading transactions...
                     </span>
                   </div>
                 ) : recentTransactions.length === 0 ? (
                   <div className="text-center py-8">
-                    <p className="text-gray-500 mb-4">No transactions yet</p>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-gray-500 dark:text-gray-400 mb-4 transition-colors duration-300">
+                      No transactions yet
+                    </p>
+                    <p className="text-sm text-gray-400 dark:text-gray-500 transition-colors duration-300">
                       Use voice input above to create your first transaction!
                     </p>
                   </div>
@@ -667,22 +669,28 @@ const Dashboard = () => {
           {/* Quick Actions & Analytics */}
           <div className="space-y-6">
             {/* Quick Actions */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 transition-colors duration-300">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">
                 Quick Actions
               </h3>
               <div className="space-y-3">
-                <button className="w-full flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                  <Calendar className="w-5 h-5 text-primary-600" />
-                  <span className="font-medium">View Monthly Report</span>
+                <button className="w-full flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                  <Calendar className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                  <span className="font-medium text-gray-900 dark:text-white transition-colors duration-300">
+                    View Monthly Report
+                  </span>
                 </button>
-                <button className="w-full flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                  <PieChart className="w-5 h-5 text-primary-600" />
-                  <span className="font-medium">Category Analysis</span>
+                <button className="w-full flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                  <PieChart className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                  <span className="font-medium text-gray-900 dark:text-white transition-colors duration-300">
+                    Category Analysis
+                  </span>
                 </button>
-                <button className="w-full flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                  <CreditCard className="w-5 h-5 text-primary-600" />
-                  <span className="font-medium">Export Data</span>
+                <button className="w-full flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                  <CreditCard className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                  <span className="font-medium text-gray-900 dark:text-white transition-colors duration-300">
+                    Export Data
+                  </span>
                 </button>
                 <button
                   onClick={() => setShowDebugger(!showDebugger)}
@@ -697,17 +705,21 @@ const Dashboard = () => {
             </div>
 
             {/* Spending Insights */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 transition-colors duration-300">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 transition-colors duration-300">
                 Spending Insights
               </h3>
               <div className="space-y-4">
                 <div>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600">Food & Drinks</span>
-                    <span className="font-medium">42%</span>
+                    <span className="text-gray-600 dark:text-gray-300 transition-colors duration-300">
+                      Food & Drinks
+                    </span>
+                    <span className="font-medium text-gray-900 dark:text-white transition-colors duration-300">
+                      42%
+                    </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 transition-colors duration-300">
                     <div
                       className="bg-primary-600 h-2 rounded-full"
                       style={{ width: "42%" }}
@@ -716,10 +728,14 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600">Transportation</span>
-                    <span className="font-medium">28%</span>
+                    <span className="text-gray-600 dark:text-gray-300 transition-colors duration-300">
+                      Transportation
+                    </span>
+                    <span className="font-medium text-gray-900 dark:text-white transition-colors duration-300">
+                      28%
+                    </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 transition-colors duration-300">
                     <div
                       className="bg-green-500 h-2 rounded-full"
                       style={{ width: "28%" }}
@@ -728,10 +744,14 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600">Shopping</span>
-                    <span className="font-medium">20%</span>
+                    <span className="text-gray-600 dark:text-gray-300 transition-colors duration-300">
+                      Shopping
+                    </span>
+                    <span className="font-medium text-gray-900 dark:text-white transition-colors duration-300">
+                      20%
+                    </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 transition-colors duration-300">
                     <div
                       className="bg-yellow-500 h-2 rounded-full"
                       style={{ width: "20%" }}
@@ -740,10 +760,14 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600">Others</span>
-                    <span className="font-medium">10%</span>
+                    <span className="text-gray-600 dark:text-gray-300 transition-colors duration-300">
+                      Others
+                    </span>
+                    <span className="font-medium text-gray-900 dark:text-white transition-colors duration-300">
+                      10%
+                    </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 transition-colors duration-300">
                     <div
                       className="bg-purple-500 h-2 rounded-full"
                       style={{ width: "10%" }}
