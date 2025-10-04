@@ -1,14 +1,32 @@
 {
-  "name": "voice-assisted-financial-manager",
+  "name": "finsay",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "AI-powered voice-assisted financial manager for modern expense tracking and budgeting",
+  "keywords": [
+    "finance",
+    "AI",
+    "voice",
+    "budgeting",
+    "expense-tracking",
+    "speech-recognition"
+  ],
+  "author": "FinSay Team",
+  "license": "MIT",
+  "homepage": "https://finsay.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/finsay/finsay-app.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "preview": "vite preview",
-    "vercel-build": "vite build"
+    "vercel-build": "vite build",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.56.0",

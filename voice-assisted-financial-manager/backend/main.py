@@ -46,9 +46,26 @@ SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
 SMTP_USERNAME = os.getenv("SMTP_USERNAME", "")
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
 
-# In-memory storage for demo (replace with database in production)
+# Database configuration
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./finsay.db")
+
+# For production, use PostgreSQL:
+# DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@localhost/finsay")
+
+# Simple in-memory storage for demo (replace with proper database in production)
+# TODO: Implement proper database models with SQLAlchemy or similar
 users_db = {}
 verification_codes = {}
+
+# Database initialization function (placeholder)
+def init_database():
+    """Initialize database tables if they don't exist"""
+    # This is a placeholder for proper database initialization
+    # In production, you would use SQLAlchemy models or similar
+    pass
+
+# Initialize database on startup
+init_database()
 
 # Pydantic models
 class UserCreate(BaseModel):
