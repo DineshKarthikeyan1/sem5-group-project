@@ -97,15 +97,22 @@ const VoiceTransactionDebugger = () => {
     }
 
     try {
-      // Step 1: Parse transaction
-      addLog("info", "Parsing transaction from speech...");
-      const parsedTransaction = transactionParser.parseTransaction(text);
-      addLog("success", "Transaction parsed", parsedTransaction);
+      // Step 1: Parse transaction(s)
+      addLog("info", "Parsing transaction(s) from speech...");
+      const parsedResult = transactionParser.parseTransaction(text);
+      const parsedTransactions = Array.isArray(parsedResult)
+        ? parsedResult
+        : [parsedResult];
 
-      // Step 2: Validate transaction
-      addLog("info", "Validating transaction...");
-      const validation =
-        transactionParser.validateTransaction(parsedTransaction);
+      addLog(
+        "success",
+        `Parsed ${parsedTransactions.length} transaction(s)`,
+        parsedTransactions
+      );
+
+      // Step 2: Validate transaction(s)
+      addLog("info", "Validating transaction(s)...");
+      const validation = transactionParser.validateTransaction(parsedResult);
 
       if (!validation.isValid) {
         addLog("error", "Transaction validation failed", validation.errors);
@@ -116,33 +123,41 @@ const VoiceTransactionDebugger = () => {
       addLog("success", "Transaction validation passed");
 
       // Step 3: Prepare data for Supabase
-      const transactionData = {
+      const transactionDataArray = parsedTransactions.map((transaction) => ({
         user_id: user.id,
         amount:
-          parsedTransaction.type === "income"
-            ? Math.abs(parsedTransaction.amount)
-            : -Math.abs(parsedTransaction.amount),
-        description: parsedTransaction.description,
-        category: parsedTransaction.category,
-        type: parsedTransaction.type,
-      };
+          transaction.type === "income"
+            ? Math.abs(transaction.amount)
+            : -Math.abs(transaction.amount),
+        description: transaction.description,
+        category: transaction.category,
+        type: transaction.type,
+      }));
 
-      addLog("info", "Prepared data for Supabase", transactionData);
+      addLog(
+        "info",
+        `Prepared ${transactionDataArray.length} transaction(s) for Supabase`,
+        transactionDataArray
+      );
 
       // Step 4: Execute Supabase query
-      addLog("query", "Executing INSERT query to Supabase...");
+      addLog(
+        "query",
+        `Executing INSERT query for ${transactionDataArray.length} transaction(s)...`
+      );
 
       const { data, error } = await supabase
         .from("transactions")
-        .insert([transactionData])
+        .insert(transactionDataArray)
         .select();
 
       // Log the exact query details
       addLog("query", "Supabase INSERT query details", {
         table: "transactions",
         operation: "INSERT",
-        data: transactionData,
+        data: transactionDataArray,
         returning: "SELECT *",
+        count: transactionDataArray.length,
       });
 
       if (error) {
@@ -155,21 +170,26 @@ const VoiceTransactionDebugger = () => {
       } else {
         addLog(
           "success",
-          "Transaction saved to Supabase successfully!",
-          data[0]
+          `${data.length} transaction(s) saved to Supabase successfully!`,
+          data
         );
 
-        // Test if we can read it back
-        addLog("info", "Verifying transaction was saved...");
+        // Test if we can read them back
+        addLog("info", "Verifying transactions were saved...");
+        const transactionIds = data.map((t) => t.id);
         const { data: verifyData, error: verifyError } = await supabase
           .from("transactions")
           .select("*")
-          .eq("id", data[0].id);
+          .in("id", transactionIds);
 
         if (verifyError) {
-          addLog("error", "Failed to verify saved transaction", verifyError);
+          addLog("error", "Failed to verify saved transactions", verifyError);
         } else {
-          addLog("success", "Transaction verified in database", verifyData[0]);
+          addLog(
+            "success",
+            `${verifyData.length} transaction(s) verified in database`,
+            verifyData
+          );
         }
       }
     } catch (error) {

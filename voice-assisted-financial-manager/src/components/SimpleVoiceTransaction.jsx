@@ -60,7 +60,7 @@ const SimpleVoiceTransaction = () => {
     recognition.start();
   };
 
-  // Simple transaction processing
+  // Enhanced transaction processing - handles multiple transactions
   const processTransaction = async (text) => {
     if (!user?.id) {
       setResult({
@@ -73,31 +73,32 @@ const SimpleVoiceTransaction = () => {
     setIsProcessing(true);
 
     try {
-      // Simple parsing - extract amount and description
-      const transaction = parseSimpleTransaction(text);
+      // Parse multiple transactions from the text
+      const transactions = parseMultipleTransactions(text);
 
-      if (!transaction.amount) {
+      if (transactions.length === 0) {
         setResult({
           success: false,
           error:
-            'Could not find an amount in your speech. Try saying something like "I spent $25 on coffee"',
+            'Could not find any transactions in your speech. Try saying something like "I spent $25 on coffee" or "I spent $15 on coffee and received $500 salary"',
         });
         setIsProcessing(false);
         return;
       }
 
-      // Insert directly into Supabase
+      // Prepare transactions for database insertion
+      const transactionData = transactions.map((transaction) => ({
+        user_id: user.id,
+        amount: transaction.amount,
+        description: transaction.description,
+        category: transaction.category,
+        type: transaction.type,
+      }));
+
+      // Insert all transactions into Supabase
       const { data, error } = await supabase
         .from("transactions")
-        .insert([
-          {
-            user_id: user.id,
-            amount: transaction.amount,
-            description: transaction.description,
-            category: transaction.category,
-            type: transaction.type,
-          },
-        ])
+        .insert(transactionData)
         .select();
 
       if (error) {
@@ -106,9 +107,11 @@ const SimpleVoiceTransaction = () => {
 
       setResult({
         success: true,
-        transaction: data[0],
+        transactions: data,
         originalText: text,
-        message: "Transaction created successfully!",
+        message: `${data.length} transaction${
+          data.length > 1 ? "s" : ""
+        } created successfully!`,
       });
 
       // Refresh transactions
@@ -122,14 +125,69 @@ const SimpleVoiceTransaction = () => {
           'relation "transactions" does not exist'
         )
           ? "You need to create the transactions table first. Check the setup instructions."
-          : "Try speaking more clearly with an amount and description.",
+          : "Try speaking more clearly with amounts and descriptions.",
       });
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // Simple transaction parser
+  // Enhanced parser for multiple transactions
+  const parseMultipleTransactions = (text) => {
+    const transactions = [];
+
+    // Split text by common conjunctions that separate transactions
+    const separators =
+      /\s+and\s+(?=.*\$)|,\s*and\s+(?=.*\$)|,\s+(?=.*\$)|;\s*(?=.*\$)/gi;
+    const segments = text.split(separators);
+
+    // If no separators found, treat as single transaction
+    if (segments.length === 1) {
+      const transaction = parseSimpleTransaction(text);
+      if (transaction.amount > 0) {
+        transactions.push(transaction);
+      }
+      return transactions;
+    }
+
+    // Process each segment
+    segments.forEach((segment, index) => {
+      const trimmedSegment = segment.trim();
+      if (!trimmedSegment) return;
+
+      // For segments after the first, we might need to add context
+      let processedSegment = trimmedSegment;
+
+      // If segment doesn't start with "I", add context from previous patterns
+      if (
+        index > 0 &&
+        !processedSegment
+          .toLowerCase()
+          .match(/^(i\s+)?(spent|received|earned|got|paid)/)
+      ) {
+        // Check if it looks like an income or expense based on keywords
+        const lowerSegment = processedSegment.toLowerCase();
+        if (
+          lowerSegment.includes("salary") ||
+          lowerSegment.includes("received") ||
+          lowerSegment.includes("earned")
+        ) {
+          processedSegment = `I received ${processedSegment}`;
+        } else {
+          processedSegment = `I spent ${processedSegment}`;
+        }
+      }
+
+      const transaction = parseSimpleTransaction(processedSegment);
+      if (transaction.amount > 0) {
+        transactions.push(transaction);
+      }
+    });
+
+    return transactions;
+  };
+
+  // Simple transaction parser (enhanced for better parsing)
   const parseSimpleTransaction = (text) => {
     const lowerText = text.toLowerCase();
 
@@ -152,46 +210,128 @@ const SimpleVoiceTransaction = () => {
       "salary",
       "income",
       "bonus",
+      "paycheck",
+      "payment",
     ];
-    const isIncome = incomeWords.some((word) => lowerText.includes(word));
-    const type = isIncome ? "income" : "expense";
+    const expenseWords = ["spent", "paid", "bought", "purchased", "cost"];
 
-    // Simple category detection
+    const hasIncomeWord = incomeWords.some((word) => lowerText.includes(word));
+    const hasExpenseWord = expenseWords.some((word) =>
+      lowerText.includes(word)
+    );
+
+    // Default to expense if ambiguous, but prefer income if income words are present
+    let type = "expense";
+    if (hasIncomeWord && !hasExpenseWord) {
+      type = "income";
+    } else if (hasIncomeWord && hasExpenseWord) {
+      // If both are present, use context clues
+      const incomeIndex = Math.min(
+        ...incomeWords
+          .map((word) => {
+            const index = lowerText.indexOf(word);
+            return index === -1 ? Infinity : index;
+          })
+          .filter((i) => i !== Infinity)
+      );
+
+      const expenseIndex = Math.min(
+        ...expenseWords
+          .map((word) => {
+            const index = lowerText.indexOf(word);
+            return index === -1 ? Infinity : index;
+          })
+          .filter((i) => i !== Infinity)
+      );
+
+      type = incomeIndex < expenseIndex ? "income" : "expense";
+    }
+
+    // Enhanced category detection
     let category = "other";
     if (
       lowerText.includes("coffee") ||
       lowerText.includes("food") ||
       lowerText.includes("restaurant") ||
       lowerText.includes("lunch") ||
-      lowerText.includes("dinner")
+      lowerText.includes("dinner") ||
+      lowerText.includes("breakfast") ||
+      lowerText.includes("meal")
     ) {
       category = "food";
     } else if (
       lowerText.includes("gas") ||
       lowerText.includes("fuel") ||
       lowerText.includes("uber") ||
-      lowerText.includes("taxi")
+      lowerText.includes("taxi") ||
+      lowerText.includes("transport")
     ) {
       category = "transport";
     } else if (
       lowerText.includes("grocery") ||
-      lowerText.includes("groceries")
+      lowerText.includes("groceries") ||
+      lowerText.includes("supermarket")
     ) {
       category = "groceries";
-    } else if (lowerText.includes("salary") || lowerText.includes("paycheck")) {
+    } else if (
+      lowerText.includes("salary") ||
+      lowerText.includes("paycheck") ||
+      lowerText.includes("wage")
+    ) {
       category = "salary";
+    } else if (
+      lowerText.includes("shopping") ||
+      lowerText.includes("clothes") ||
+      lowerText.includes("clothing")
+    ) {
+      category = "shopping";
+    } else if (
+      lowerText.includes("entertainment") ||
+      lowerText.includes("movie") ||
+      lowerText.includes("game")
+    ) {
+      category = "entertainment";
     }
 
     // Clean description
     let description = text;
+
+    // Remove amount from description
     if (dollarMatch) {
-      description = text.replace(dollarMatch[0], "").trim();
+      description = description.replace(dollarMatch[0], "").trim();
     }
-    if (description.toLowerCase().startsWith("i spent")) {
-      description = description.substring(7).trim();
+    if (dollarsMatch) {
+      description = description
+        .replace(dollarsMatch[0] + " dollars", "")
+        .trim();
     }
-    if (description.toLowerCase().startsWith("on ")) {
-      description = description.substring(3).trim();
+
+    // Remove common prefixes
+    const prefixesToRemove = [
+      /^i\s+(spent|paid|bought|purchased)\s*/i,
+      /^i\s+(received|earned|got)\s*/i,
+      /^(spent|paid|bought|purchased)\s*/i,
+      /^(received|earned|got)\s*/i,
+      /^on\s+/i,
+      /^for\s+/i,
+      /^at\s+/i,
+    ];
+
+    prefixesToRemove.forEach((prefix) => {
+      description = description.replace(prefix, "").trim();
+    });
+
+    // If description is empty or too short, create a default based on category
+    if (!description || description.length < 3) {
+      if (category === "food") {
+        description = "Food purchase";
+      } else if (category === "transport") {
+        description = "Transportation";
+      } else if (category === "salary") {
+        description = "Salary payment";
+      } else {
+        description = type === "income" ? "Income" : "Expense";
+      }
     }
 
     return {
@@ -325,7 +465,46 @@ const SimpleVoiceTransaction = () => {
               {result.success ? "✅ Success!" : "❌ Error"}
             </h3>
 
-            {result.success && result.transaction && (
+            {result.success && result.transactions && (
+              <div className="text-sm space-y-3">
+                {result.transactions.map((transaction, index) => (
+                  <div
+                    key={transaction.id || index}
+                    className="p-3 bg-white dark:bg-gray-800 rounded border"
+                  >
+                    <div className="flex justify-between items-start mb-2">
+                      <h4 className="font-medium text-gray-900 dark:text-white">
+                        Transaction {index + 1}
+                      </h4>
+                      <span
+                        className={`font-bold ${
+                          transaction.type === "income"
+                            ? "text-green-600 dark:text-green-400"
+                            : "text-red-600 dark:text-red-400"
+                        }`}
+                      >
+                        {transaction.type === "income" ? "+" : "-"}$
+                        {transaction.amount}
+                      </span>
+                    </div>
+                    <div className="space-y-1 text-xs text-gray-600 dark:text-gray-400">
+                      <p>
+                        <strong>Description:</strong> {transaction.description}
+                      </p>
+                      <p>
+                        <strong>Category:</strong> {transaction.category}
+                      </p>
+                      <p>
+                        <strong>Type:</strong> {transaction.type}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Fallback for single transaction (backward compatibility) */}
+            {result.success && result.transaction && !result.transactions && (
               <div className="text-sm space-y-1">
                 <p>
                   <strong>Amount:</strong> ${result.transaction.amount}
@@ -406,8 +585,21 @@ const SimpleVoiceTransaction = () => {
           </h3>
           <div className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
             <p>• Click the microphone and speak clearly</p>
-            <p>• Say things like: "I spent $25 on coffee"</p>
-            <p>• Or: "I received $500 salary payment"</p>
+            <p>
+              <strong>Single transactions:</strong>
+            </p>
+            <p className="ml-4">- "I spent $25 on coffee"</p>
+            <p className="ml-4">- "I received $500 salary payment"</p>
+            <p>
+              <strong>Multiple transactions:</strong>
+            </p>
+            <p className="ml-4">
+              - "I spent $15 on coffee and received $500 salary"
+            </p>
+            <p className="ml-4">- "I paid $50 for groceries and $20 for gas"</p>
+            <p className="ml-4">
+              - "I bought lunch for $12, and got $100 bonus"
+            </p>
             <p>• Works best in Chrome or Edge browsers</p>
           </div>
         </div>

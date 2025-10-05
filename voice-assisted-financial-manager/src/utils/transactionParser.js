@@ -129,8 +129,76 @@ export class TransactionParser {
     ];
   }
 
-  // Parse voice input into transaction data
+  // Parse voice input into transaction data (supports multiple transactions)
   parseTransaction(text) {
+    const transactions = this.parseMultipleTransactions(text);
+
+    // For backward compatibility, return the first transaction if only one
+    if (transactions.length === 1) {
+      return transactions[0];
+    }
+
+    // If multiple transactions, return an array
+    return transactions;
+  }
+
+  // Parse multiple transactions from a single voice input
+  parseMultipleTransactions(text) {
+    const transactions = [];
+
+    // Split text by common conjunctions that separate transactions
+    const separators =
+      /\s+and\s+(?=.*\$)|,\s*and\s+(?=.*\$)|,\s+(?=.*\$)|;\s*(?=.*\$)/gi;
+    const segments = text.split(separators);
+
+    // If no separators found, treat as single transaction
+    if (segments.length === 1) {
+      const transaction = this.parseSingleTransaction(text);
+      if (transaction.amount !== 0) {
+        transactions.push(transaction);
+      }
+      return transactions;
+    }
+
+    // Process each segment
+    segments.forEach((segment, index) => {
+      const trimmedSegment = segment.trim();
+      if (!trimmedSegment) return;
+
+      // For segments after the first, we might need to add context
+      let processedSegment = trimmedSegment;
+
+      // If segment doesn't start with "I", add context from previous patterns
+      if (
+        index > 0 &&
+        !processedSegment
+          .toLowerCase()
+          .match(/^(i\s+)?(spent|received|earned|got|paid|bought)/)
+      ) {
+        // Check if it looks like an income or expense based on keywords
+        const lowerSegment = processedSegment.toLowerCase();
+        if (
+          this.incomeKeywords.some((keyword) => lowerSegment.includes(keyword))
+        ) {
+          processedSegment = `I received ${processedSegment}`;
+        } else {
+          processedSegment = `I spent ${processedSegment}`;
+        }
+      }
+
+      const transaction = this.parseSingleTransaction(processedSegment);
+      if (transaction.amount !== 0) {
+        // Add unique ID for each transaction
+        transaction.id = Date.now() + index;
+        transactions.push(transaction);
+      }
+    });
+
+    return transactions;
+  }
+
+  // Parse a single transaction from text
+  parseSingleTransaction(text) {
     const lowerText = text.toLowerCase();
 
     // Extract amount
@@ -260,24 +328,54 @@ export class TransactionParser {
   // Get suggestions for improving voice input
   getSuggestions() {
     return [
-      "Try: 'I spent $15 on coffee at Starbucks'",
-      "Try: 'I received $500 salary payment'",
-      "Try: 'Paid $45 for gas at Shell station'",
-      "Try: 'Bought groceries for $87.50'",
-      "Try: 'Got $20 cashback from ATM'",
+      // Single transaction examples
+      "Single: 'I spent $15 on coffee at Starbucks'",
+      "Single: 'I received $500 salary payment'",
+      "Single: 'Paid $45 for gas at Shell station'",
+
+      // Multiple transaction examples
+      "Multiple: 'I spent $15 on coffee and received $500 salary'",
+      "Multiple: 'I paid $50 for groceries and $20 for gas'",
+      "Multiple: 'Bought lunch for $12, and got $100 bonus'",
+      "Multiple: 'I spent $25 at Starbucks, $40 on groceries, and received $200 freelance payment'",
     ];
   }
 
-  // Validate parsed transaction
+  // Validate parsed transaction(s)
   validateTransaction(transaction) {
+    // Handle array of transactions
+    if (Array.isArray(transaction)) {
+      const results = transaction.map((t, index) =>
+        this.validateSingleTransaction(t, index)
+      );
+      const allErrors = results.flatMap((r) => r.errors);
+
+      return {
+        isValid: allErrors.length === 0,
+        errors: allErrors,
+        results: results,
+      };
+    }
+
+    // Handle single transaction
+    return this.validateSingleTransaction(transaction);
+  }
+
+  // Validate a single transaction
+  validateSingleTransaction(transaction, index = null) {
     const errors = [];
+    const prefix = index !== null ? `Transaction ${index + 1}: ` : "";
 
     if (!transaction.amount || transaction.amount === 0) {
-      errors.push("Could not detect amount. Please mention a dollar amount.");
+      errors.push(
+        `${prefix}Could not detect amount. Please mention a dollar amount.`
+      );
     }
 
     if (!transaction.description || transaction.description.length < 3) {
-      errors.push("Description is too short. Please provide more details.");
+      errors.push(
+        `${prefix}Description is too short. Please provide more details.`
+      );
     }
 
     return {

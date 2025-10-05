@@ -36,6 +36,39 @@ export class TransactionService {
     }
   }
 
+  // Create multiple transactions at once
+  static async createMultipleTransactions(userId, transactionsData) {
+    try {
+      console.log(
+        `💾 Creating ${transactionsData.length} transactions:`,
+        transactionsData
+      );
+
+      const transactionRecords = transactionsData.map((transactionData) => ({
+        user_id: userId,
+        amount: transactionData.amount,
+        description: transactionData.description,
+        category: transactionData.category,
+        type: transactionData.type,
+      }));
+
+      const { data, error } = await supabase
+        .from("transactions")
+        .insert(transactionRecords)
+        .select();
+
+      if (error) {
+        throw error;
+      }
+
+      console.log(`✅ ${data.length} transactions created:`, data);
+      return { success: true, data: data };
+    } catch (error) {
+      console.error("❌ Error creating transactions:", error);
+      return { success: false, error: error.message };
+    }
+  }
+
   // Get user's transactions
   static async getUserTransactions(userId, limit = 10) {
     try {
